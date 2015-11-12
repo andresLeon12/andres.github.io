@@ -177,14 +177,13 @@ div#notebook {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="8-Puzzle">8-Puzzle<a class="anchor-link" href="#8-Puzzle">&#182;</a></h1><h2 id="PLANTEAMIENTO-DEL-PROBLEMA">PLANTEAMIENTO DEL PROBLEMA<a class="anchor-link" href="#PLANTEAMIENTO-DEL-PROBLEMA">&#182;</a></h2><blockquote><p>El juego del puzzle se representa, sobre un tablero de 3x3 casillas. 8 de las casillas
-contienen una pieza o ficha que se puede deslizar a lo largo del tablero horizontal y
-verticalmente. Las fichas vienen marcadas con los números del 1 al 8, y el 0 representa a la
-casilla vacía, que permite los movimientos de las fichas. El objetivo del problema es partiendo
-de un tablero inicial con las fichas desordenadas alcanzar un tablero en el que todas las fichas
-estén ordenadas en orden creciente, dejando el hueco en la primer casilla del tablero. El
-número total de estados o tableros posibles que se pueden generar en el juego del puzzle es 9! =
-362,880 estados.</p>
+<h1 id="8-Puzzle">Misioneros y Canivales<a class="anchor-link" href="#8-Puzzle">&#182;</a></h1><h2 id="PLANTEAMIENTO-DEL-PROBLEMA">PLANTEAMIENTO DEL PROBLEMA<a class="anchor-link" href="#PLANTEAMIENTO-DEL-PROBLEMA">&#182;</a></h2><blockquote><p>En un mundo alterno existen 3 misioneros y 3 caníbales que se encuentran del lado izquierdo de un río. Todos deben pasar al lado derecho del mismo.
+
+Para pasar al otro lado cuentan con un bote. Sin embargo, la capacidad máxima del bote es de dos personas.
+
+Es imperativo que en un momento dado no haya más caníbales que misioneros en un lado del río porque se comerían a los misioneros.
+
+¿Cuál sería la estrategia a utilizar para que todas las personas puedan pasar al lado derecho del río sin perder a nadie en el proceso?.</p>
 </blockquote>
 
 </div>
@@ -195,7 +194,7 @@ número total de estados o tableros posibles que se pueden generar en el juego d
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Representaci&#243;n">Representaci&#243;n<a class="anchor-link" href="#Representaci&#243;n">&#182;</a></h2><blockquote><p>La representación del problema esta dado por dos listas que representan el estado inicial del tablero y el estado final o solución esperada del problema, como se muestra a continuación.</p>
+<h2 id="Representaci&#243;n">Representaci&#243;n<a class="anchor-link" href="#Representaci&#243;n">&#182;</a></h2><blockquote><p>La representación del problema esta dado por dos listas que representan el estado inicial de los misioneros, canivales y el bote y el estado final o solución esperada del problema, como se muestra a continuación.</p>
 </blockquote>
 
 </div>
@@ -207,16 +206,12 @@ número total de estados o tableros posibles que se pueden generar en el juego d
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="c"># Estado inicial del problema</span>
-<span class="n">map_init</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="n">map_init</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="mi">4</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">])</span>
-<span class="n">map_init</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="mi">7</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">])</span>
-<span class="n">map_init</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="mi">8</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">])</span>
+<span>En este caso el 1 representa que el bote esta ubicado del lado izquierdo</span>
+<span class="n">initial_state</span> <span class="o">=</span> <span class="p">[3,3,1,0,0,0]</span>
 
 <span class="c"># Solución esperada o estado final</span>
-<span class="n">map_fin</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="n">map_fin</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">])</span>
-<span class="n">map_fin</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">])</span>
-<span class="n">map_fin</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="mi">7</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">0</span><span class="p">])</span>
+<span>En este caso el 1 representa que el bote esta ubicado del lado derecho</span>
+<span class="n">final_state</span> <span class="o">=</span> <span class="p">[0,0,0,3,3,1]</span>
 </pre></div>
 
 </div>
@@ -240,7 +235,7 @@ número total de estados o tableros posibles que se pueden generar en el juego d
 <div class="prompt input_prompt">In&nbsp;[7]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span class="n">estado</span> <span class="o">=</span> <span class="p">[</span><span class="n">estado_actual</span><span class="p">,</span> <span class="n">estado_anterior</span><span class="p">,</span> <span class="n">costo</span><span class="p">,</span> <span class="n">procesado</span><span class="p">]</span>
+<div class=" highlight hl-ipython3"><pre><span class="n">estados</span> <span class="o">=</span> <span class="p">[</span><span class="n">estado_actual</span><span class="p">,</span> <span class="n">estado_anterior</span>
 </pre></div>
 
 </div>
