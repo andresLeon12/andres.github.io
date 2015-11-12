@@ -235,7 +235,7 @@ Es imperativo que en un momento dado no haya más caníbales que misioneros en u
 <div class="prompt input_prompt">In&nbsp;[7]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span class="n">estados</span> <span class="o">=</span> <span class="p">[</span><span class="n">estado_actual</span><span class="p">,</span> <span class="n">estado_anterior</span>
+<div class=" highlight hl-ipython3"><pre><span class="n">estados</span> <span class="o">=</span> <span class="p">[</span><span class="n">estado_actual</span><span class="p">,</span> <span class="n">estado_anterior</span><span class="p">[</span>
 </pre></div>
 
 </div>
@@ -252,8 +252,6 @@ Es imperativo que en un momento dado no haya más caníbales que misioneros en u
 <ul>
 <li>estado_actual: representa al estado generado en el último movimiento, </li>
 <li>estado_anterior: representa al estado anterior o padre del cual se genera el estado_actual,</li>
-<li>costo: representa el costo de llegar a esta solución, ya que se ha aplicado una heurística y</li>
-<li>procesado: que muestra si el estado ya ha sido procesado con el fin de evitar ciclos</li>
 </ul>
 </blockquote>
 
@@ -265,7 +263,14 @@ Es imperativo que en un momento dado no haya más caníbales que misioneros en u
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Soluci&#243;n-del-problema">Soluci&#243;n del problema<a class="anchor-link" href="#Soluci&#243;n-del-problema">&#182;</a></h1><blockquote><p>Para encontrar la solución del problema utilizamos el algoritmo A*, haciendo uso de dos listas para representar los estados generados y otra para representar a los estados ya procesados.</p>
+<h1 id="Soluci&#243;n-del-problema">Soluci&#243;n del problema<a class="anchor-link" href="#Soluci&#243;n-del-problema">&#182;</a></h1><blockquote><p>Para encontrar la solución del problema utilizamos el búsqueda en anchura para ir buscando que estados son válidos.</p>
+</blockquote>
+
+</div>
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Soluci&#243;n-del-problema">Soluci&#243;n del problema<a class="anchor-link" href="#Soluci&#243;n-del-problema">&#182;</a></h1><blockquote><p>Para revisar que son estados válidos realizamos 5 comparaciones de movimientos posibles del lado izquierdo al derecho:</p>
 </blockquote>
 
 </div>
@@ -273,11 +278,16 @@ Es imperativo que en un momento dado no haya más caníbales que misioneros en u
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">Llevando 1 misioneros</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span class="n">estados</span> <span class="o">=</span> <span class="p">[</span><span class="n">estado_actual</span><span class="p">,</span> <span class="n">estado_anterior</span><span class="p">,</span> <span class="n">costo</span><span class="p">,</span> <span class="n">procesado</span><span class="p">]</span>
-<span class="n">procesados</span> <span class="o">=</span> <span class="p">[</span><span class="n">estado_actual</span><span class="p">,</span> <span class="n">estado_anterior</span><span class="p">,</span> <span class="n">costo</span><span class="p">,</span> <span class="n">procesado</span><span class="p">]</span>
+<div class=" highlight hl-ipython3"><pre>
+<span>if</span><span>current_left[2]</span><span>==</span><span>1</span><span>and</span><span>current_right[2]</span><span>==</span><span>0:</span>
+		<span>if</span><span>current_left[0]</span><span>></span><span>0:</span>
+			<span>new_state</span><span>=</span><span>[]</span>
+			<span>new_state</span><span>=</span><span>[current_left[0]-1,</span><span>current_left[1],</span><span>0,</span><span>current_right[0]+1,</span><span>current_right[1],</span><span>1]</span>
+			<span>if</span><span>(new_state[0]</span><span>>=</span><span>new_state[1]</span><span>or</span><span>new_state[0]</span><span>==</span><span>0)</span><span>and</span><span>(new_state[3]</span><span>>=</span><span>new_state[4]</span><span>or</span><span>new_state[3]</span><span>==</span><span>0):</span>
+				<span>estados.append([new_state, current])</span>
 </pre></div>
 
 </div>
@@ -285,12 +295,85 @@ Es imperativo que en un momento dado no haya más caníbales que misioneros en u
 </div>
 
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">Llevando 1 canival</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre>
+<span>if</span><span>current_left[2]</span><span>==</span><span>1</span><span>and</span><span>current_right[2]</span><span>==</span><span>0:</span>
+		<span>if</span><span>current_left[1]</span><span>></span><span>0:</span>
+			<span>new_state</span><span>=</span><span>[]</span>
+			<span>new_state</span><span>=</span><span>[current_left[0],</span><span>current_left[1]-1,</span><span>0,</span><span>current_right[0],</span><span>current_right[1]+1,</span><span>1]</span>
+			<span>if</span><span>(new_state[0]</span><span>>=</span><span>new_state[1]</span><span>or</span><span>new_state[0]</span><span>==</span><span>0)</span><span>and</span><span>(new_state[3]</span><span>>=</span><span>new_state[4]</span><span>or</span><span>new_state[3]</span><span>==</span><span>0):</span>
+				<span>estados.append([new_state, current])</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">Llevando 2 canivales</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre>
+<span>if</span><span>current_left[2]</span><span>==</span><span>1</span><span>and</span><span>current_right[2]</span><span>==</span><span>0:</span>
+		<span>if</span><span>current_left[1]</span><span>></span><span>1:</span>
+			<span>new_state</span><span>=</span><span>[]</span>
+			<span>new_state</span><span>=</span><span>[current_left[0],</span><span>current_left[1]-2,</span><span>0,</span><span>current_right[0],</span><span>current_right[1]+2,</span><span>1]</span>
+			<span>if</span><span>(new_state[0]</span><span>>=</span><span>new_state[1]</span><span>or</span><span>new_state[0]</span><span>==</span><span>0)</span><span>and</span><span>(new_state[3]</span><span>>=</span><span>new_state[4]</span><span>or</span><span>new_state[3]</span><span>==</span><span>0):</span>
+				<span>estados.append([new_state, current])</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">Llevando 2 misioneros</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre>
+<span>if</span><span>current_left[2]</span><span>==</span><span>1</span><span>and</span><span>current_right[2]</span><span>==</span><span>0:</span>
+		<span>if</span><span>current_left[0]</span><span>></span><span>1:</span>
+			<span>new_state</span><span>=</span><span>[]</span>
+			<span>new_state</span><span>=</span><span>[current_left[0]-2,</span><span>current_left[1],</span><span>0,</span><span>current_right[0]+2,</span><span>current_right[1],</span><span>1]</span>
+			<span>if</span><span>(new_state[0]</span><span>>=</span><span>new_state[1]</span><span>or</span><span>new_state[0]</span><span>==</span><span>0)</span><span>and</span><span>(new_state[3]</span><span>>=</span><span>new_state[4]</span><span>or</span><span>new_state[3]</span><span>==</span><span>0):</span>
+				<span>estados.append([new_state, current])</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">Llevando 1 misionero y un canival</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre>
+<span>if</span><span>current_left[2]</span><span>==</span><span>1</span><span>and</span><span>current_right[2]</span><span>==</span><span>0:</span>
+		<span>if</span><span>current_left[0]</span><span>></span><span>0:</span><span>if</span><span>and</span><span>current_left[1]</span><span>></span><span>0:</span>
+			<span>new_state</span><span>=</span><span>[]</span>
+			<span>new_state</span><span>=</span><span>[current_left[0]-1,</span><span>current_left[1]-1,</span><span>0,</span><span>current_right[0]+1,</span><span>current_right[1]+1,</span><span>1]</span>
+			<span>if</span><span>(new_state[0]</span><span>>=</span><span>new_state[1]</span><span>or</span><span>new_state[0]</span><span>==</span><span>0)</span><span>and</span><span>(new_state[3]</span><span>>=</span><span>new_state[4]</span><span>or</span><span>new_state[3]</span><span>==</span><span>0):</span>
+				<span>estados.append([new_state, current])</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<blockquote><p>Ademas utilizamos dos heurísticas para seleccionar el mejor nodo que se acerque a la solución, las heurísticas aplicadas son distancia de manhattan y número de piezas mal colocadas.</p>
+<h1 id="Soluci&#243;n-del-problema">Soluci&#243;n del problema<a class="anchor-link" href="#Soluci&#243;n-del-problema">&#182;</a></h1><blockquote><p>De la misma manera realizamos estas comparaciones, pero ahora viniendo del lado derecho al izquierdo:</p>
 </blockquote>
 
 </div>
@@ -298,39 +381,92 @@ Es imperativo que en un momento dado no haya más caníbales que misioneros en u
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">Llevando 1 misioneros</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span class="c"># Obtenemos distancia de manhattan</span>
-<span class="k">def</span> <span class="nf">distancia</span><span class="p">(</span><span class="n">map_init</span><span class="p">,</span> <span class="n">map_fin</span><span class="p">):</span>
-    <span class="n">distancia_man</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">map_fin</span><span class="p">)):</span>
-        <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">map_fin</span><span class="p">[</span><span class="mi">0</span><span class="p">])):</span>
-            <span class="n">elem</span> <span class="o">=</span> <span class="n">map_fin</span><span class="p">[</span><span class="n">x</span><span class="p">][</span><span class="n">y</span><span class="p">]</span>
-            <span class="k">if</span> <span class="n">elem</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-                <span class="k">continue</span>
-            <span class="n">ban</span> <span class="o">=</span> <span class="mi">0</span>
-            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">map_init</span><span class="p">)):</span>
-                <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">map_init</span><span class="p">[</span><span class="mi">0</span><span class="p">])):</span>
-                    <span class="k">if</span> <span class="n">map_init</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">==</span> <span class="n">elem</span><span class="p">:</span>
-                        <span class="n">distancia</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">((</span><span class="n">x</span><span class="o">-</span><span class="n">i</span><span class="p">))</span><span class="o">+</span><span class="nb">abs</span><span class="p">((</span><span class="n">y</span><span class="o">-</span><span class="n">j</span><span class="p">))</span>
-                        <span class="n">ban</span> <span class="o">=</span> <span class="mi">1</span>
-                        <span class="n">distancia_man</span> <span class="o">=</span> <span class="n">distancia_man</span> <span class="o">+</span> <span class="n">distancia</span>
-                        <span class="k">break</span>
-                <span class="k">if</span> <span class="n">ban</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-                    <span class="k">break</span>
-    <span class="k">return</span> <span class="n">distancia_man</span>
+<div class=" highlight hl-ipython3"><pre>
+<span>if</span><span>current_left[2]</span><span>==</span><span>0</span><span>and</span><span>current_right[2]</span><span>==</span><span>1:</span>
+		<span>if</span><span>current_left[0]</span><span>></span><span>0:</span>
+			<span>new_state</span><span>=</span><span>[]</span>
+			<span>new_state</span><span>=</span><span>[current_left[0]-1,</span><span>current_left[1],</span><span>0,</span><span>current_right[0]+1,</span><span>current_right[1],</span><span>1]</span>
+			<span>if</span><span>(new_state[0]</span><span>>=</span><span>new_state[1]</span><span>or</span><span>new_state[0]</span><span>==</span><span>0)</span><span>and</span><span>(new_state[3]</span><span>>=</span><span>new_state[4]</span><span>or</span><span>new_state[3]</span><span>==</span><span>0):</span>
+				<span>estados.append([new_state, current])</span>
+</pre></div>
 
-<span class="c"># Obtenemos el número de piezas mal colocadas</span>
-<span class="k">def</span> <span class="nf">pieza_mal_colodas</span><span class="p">(</span><span class="n">map_init</span><span class="p">,</span> <span class="n">map_fin</span><span class="p">):</span>
-    <span class="n">piezas</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">map_fin</span><span class="p">)):</span>
-        <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">map_fin</span><span class="p">[</span><span class="mi">0</span><span class="p">])):</span>
-            <span class="k">if</span> <span class="n">map_fin</span><span class="p">[</span><span class="n">x</span><span class="p">][</span><span class="n">y</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-                <span class="k">continue</span>
-            <span class="k">if</span> <span class="n">map_fin</span><span class="p">[</span><span class="n">x</span><span class="p">][</span><span class="n">y</span><span class="p">]</span> <span class="o">!=</span> <span class="n">map_init</span><span class="p">[</span><span class="n">x</span><span class="p">][</span><span class="n">y</span><span class="p">]:</span>
-                <span class="n">piezas</span> <span class="o">=</span> <span class="n">piezas</span> <span class="o">+</span> <span class="mi">1</span>
-    <span class="k">return</span> <span class="n">piezas</span>
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">Llevando 1 canival</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre>
+<span>if</span><span>current_left[2]</span><span>==</span><span>0</span><span>and</span><span>current_right[2]</span><span>==</span><span>1:</span>
+		<span>if</span><span>current_left[1]</span><span>></span><span>0:</span>
+			<span>new_state</span><span>=</span><span>[]</span>
+			<span>new_state</span><span>=</span><span>[current_left[0],</span><span>current_left[1]-1,</span><span>0,</span><span>current_right[0],</span><span>current_right[1]+1,</span><span>1]</span>
+			<span>if</span><span>(new_state[0]</span><span>>=</span><span>new_state[1]</span><span>or</span><span>new_state[0]</span><span>==</span><span>0)</span><span>and</span><span>(new_state[3]</span><span>>=</span><span>new_state[4]</span><span>or</span><span>new_state[3]</span><span>==</span><span>0):</span>
+				<span>estados.append([new_state, current])</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">Llevando 2 canivales</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre>
+<span>if</span><span>current_left[2]</span><span>==</span><span>0</span><span>and</span><span>current_right[2]</span><span>==</span><span>1:</span>
+		<span>if</span><span>current_left[1]</span><span>></span><span>1:</span>
+			<span>new_state</span><span>=</span><span>[]</span>
+			<span>new_state</span><span>=</span><span>[current_left[0],</span><span>current_left[1]-2,</span><span>0,</span><span>current_right[0],</span><span>current_right[1]+2,</span><span>1]</span>
+			<span>if</span><span>(new_state[0]</span><span>>=</span><span>new_state[1]</span><span>or</span><span>new_state[0]</span><span>==</span><span>0)</span><span>and</span><span>(new_state[3]</span><span>>=</span><span>new_state[4]</span><span>or</span><span>new_state[3]</span><span>==</span><span>0):</span>
+				<span>estados.append([new_state, current])</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">Llevando 2 misioneros</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre>
+<span>if</span><span>current_left[2]</span><span>==</span><span>0</span><span>and</span><span>current_right[2]</span><span>==</span><span>1:</span>
+		<span>if</span><span>current_left[0]</span><span>></span><span>1:</span>
+			<span>new_state</span><span>=</span><span>[]</span>
+			<span>new_state</span><span>=</span><span>[current_left[0]-2,</span><span>current_left[1],</span><span>0,</span><span>current_right[0]+2,</span><span>current_right[1],</span><span>1]</span>
+			<span>if</span><span>(new_state[0]</span><span>>=</span><span>new_state[1]</span><span>or</span><span>new_state[0]</span><span>==</span><span>0)</span><span>and</span><span>(new_state[3]</span><span>>=</span><span>new_state[4]</span><span>or</span><span>new_state[3]</span><span>==</span><span>0):</span>
+				<span>estados.append([new_state, current])</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">Llevando 1 misionero y un canival</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre>
+<span>if</span><span>current_left[2]</span><span>==</span><span>0</span><span>and</span><span>current_right[2]</span><span>==</span><span>1:</span>
+		<span>if</span><span>current_left[0]</span><span>></span><span>0:</span><span>if</span><span>and</span><span>current_left[1]</span><span>></span><span>0:</span>
+			<span>new_state</span><span>=</span><span>[]</span>
+			<span>new_state</span><span>=</span><span>[current_left[0]-1,</span><span>current_left[1]-1,</span><span>0,</span><span>current_right[0]+1,</span><span>current_right[1]+1,</span><span>1]</span>
+			<span>if</span><span>(new_state[0]</span><span>>=</span><span>new_state[1]</span><span>or</span><span>new_state[0]</span><span>==</span><span>0)</span><span>and</span><span>(new_state[3]</span><span>>=</span><span>new_state[4]</span><span>or</span><span>new_state[3]</span><span>==</span><span>0):</span>
+				<span>estados.append([new_state, current])</span>
 </pre></div>
 
 </div>
@@ -348,259 +484,6 @@ Es imperativo que en un momento dado no haya más caníbales que misioneros en u
 
 </div>
 </div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span class="c"># Agregamos un nuevo nodo a la lista de estados</span>
-<span class="k">def</span> <span class="nf">agregar_nodos</span><span class="p">(</span><span class="n">procesados</span><span class="p">,</span><span class="n">map_fin</span><span class="p">,</span><span class="n">actual</span><span class="p">,</span> <span class="n">menor</span><span class="p">):</span>
-    <span class="c"># Comprobamos si el estado final esperado</span>
-    <span class="k">if</span> <span class="n">actual</span> <span class="o">==</span> <span class="n">map_fin</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s">&quot;Encontrado &quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">actual</span><span class="p">))</span>
-        <span class="k">return</span> <span class="p">[]</span>
-    <span class="c"># Verificamos que este nodo no haya sido ya procesado</span>
-    <span class="k">elif</span> <span class="ow">not</span> <span class="n">actual</span> <span class="ow">in</span> <span class="n">procesados</span><span class="p">:</span>
-        <span class="n">estado</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="n">anterior</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="n">anterior</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">nodo</span><span class="p">)</span>
-        <span class="n">estado</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">actual</span><span class="p">)</span> <span class="c"># Estado actual</span>
-        <span class="n">estado</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">anterior</span><span class="p">)</span> <span class="c"># Estado anterior</span>
-        <span class="c"># Obtenemos su valor heurístico</span>
-        <span class="n">val</span> <span class="o">=</span> <span class="n">distancia</span><span class="p">(</span><span class="n">actual</span><span class="p">,</span> <span class="n">map_fin</span><span class="p">)</span>
-        <span class="n">piezas</span> <span class="o">=</span> <span class="n">pieza_mal_colodas</span><span class="p">(</span><span class="n">actual</span><span class="p">,</span> <span class="n">map_fin</span><span class="p">)</span>
-        <span class="n">val</span> <span class="o">=</span> <span class="n">val</span> <span class="o">+</span> <span class="n">piezas</span> <span class="o">+</span> <span class="n">menor</span>
-        <span class="n">estado</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
-        <span class="n">estado</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="k">False</span><span class="p">)</span> 
-        <span class="k">return</span> <span class="n">estado</span>
-    <span class="k">return</span> <span class="k">None</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Implementaci&#243;n">Implementaci&#243;n<a class="anchor-link" href="#Implementaci&#243;n">&#182;</a></h2><blockquote><p>La implementación del algoritmo y sus resultados se muestran a continuación:</p>
-</blockquote>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[8]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span class="kn">import</span> <span class="nn">copy</span>
-<span class="kn">from</span> <span class="nn">collections</span> <span class="k">import</span> <span class="n">deque</span>
-
-<span class="c"># Obtenemos distancia de manhattan</span>
-<span class="k">def</span> <span class="nf">distancia</span><span class="p">(</span><span class="n">map_init</span><span class="p">,</span> <span class="n">map_fin</span><span class="p">):</span>
-    <span class="n">distancia_man</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">map_fin</span><span class="p">)):</span>
-        <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">map_fin</span><span class="p">[</span><span class="mi">0</span><span class="p">])):</span>
-            <span class="n">elem</span> <span class="o">=</span> <span class="n">map_fin</span><span class="p">[</span><span class="n">x</span><span class="p">][</span><span class="n">y</span><span class="p">]</span>
-            <span class="k">if</span> <span class="n">elem</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-                <span class="k">continue</span>
-            <span class="n">ban</span> <span class="o">=</span> <span class="mi">0</span>
-            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">map_init</span><span class="p">)):</span>
-                <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">map_init</span><span class="p">[</span><span class="mi">0</span><span class="p">])):</span>
-                    <span class="k">if</span> <span class="n">map_init</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">==</span> <span class="n">elem</span><span class="p">:</span>
-                        <span class="n">distancia</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">((</span><span class="n">x</span><span class="o">-</span><span class="n">i</span><span class="p">))</span><span class="o">+</span><span class="nb">abs</span><span class="p">((</span><span class="n">y</span><span class="o">-</span><span class="n">j</span><span class="p">))</span>
-                        <span class="n">ban</span> <span class="o">=</span> <span class="mi">1</span>
-                        <span class="n">distancia_man</span> <span class="o">=</span> <span class="n">distancia_man</span> <span class="o">+</span> <span class="n">distancia</span>
-                        <span class="k">break</span>
-                <span class="k">if</span> <span class="n">ban</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-                    <span class="k">break</span>
-    <span class="k">return</span> <span class="n">distancia_man</span>
-
-<span class="c"># Obtenemos el número de piezas mal colocadas</span>
-<span class="k">def</span> <span class="nf">pieza_mal_colodas</span><span class="p">(</span><span class="n">map_init</span><span class="p">,</span> <span class="n">map_fin</span><span class="p">):</span>
-    <span class="n">piezas</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">map_fin</span><span class="p">)):</span>
-        <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">map_fin</span><span class="p">[</span><span class="mi">0</span><span class="p">])):</span>
-            <span class="k">if</span> <span class="n">map_fin</span><span class="p">[</span><span class="n">x</span><span class="p">][</span><span class="n">y</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-                <span class="k">continue</span>
-            <span class="k">if</span> <span class="n">map_fin</span><span class="p">[</span><span class="n">x</span><span class="p">][</span><span class="n">y</span><span class="p">]</span> <span class="o">!=</span> <span class="n">map_init</span><span class="p">[</span><span class="n">x</span><span class="p">][</span><span class="n">y</span><span class="p">]:</span>
-                <span class="n">piezas</span> <span class="o">=</span> <span class="n">piezas</span> <span class="o">+</span> <span class="mi">1</span>
-    <span class="k">return</span> <span class="n">piezas</span>
-
-<span class="c"># Agregamos un nuevo nodo a la lista de estados</span>
-<span class="k">def</span> <span class="nf">agregar_nodos</span><span class="p">(</span><span class="n">procesados</span><span class="p">,</span><span class="n">map_fin</span><span class="p">,</span><span class="n">actual</span><span class="p">,</span> <span class="n">menor</span><span class="p">):</span>
-    <span class="c"># Comprobamos si el estado final esperado</span>
-    <span class="k">if</span> <span class="n">actual</span> <span class="o">==</span> <span class="n">map_fin</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s">&quot;Encontrado &quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">actual</span><span class="p">))</span>
-        <span class="k">return</span> <span class="p">[]</span>
-    <span class="c"># Verificamos que este nodo no haya sido ya procesado</span>
-    <span class="k">elif</span> <span class="ow">not</span> <span class="n">actual</span> <span class="ow">in</span> <span class="n">procesados</span><span class="p">:</span>
-        <span class="n">estado</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="n">anterior</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="n">anterior</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">nodo</span><span class="p">)</span>
-        <span class="n">estado</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">actual</span><span class="p">)</span> <span class="c"># Estado actual</span>
-        <span class="n">estado</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">anterior</span><span class="p">)</span> <span class="c"># Estado anterior</span>
-        <span class="c"># Obtenemos su valor heurístico</span>
-        <span class="n">val</span> <span class="o">=</span> <span class="n">distancia</span><span class="p">(</span><span class="n">actual</span><span class="p">,</span> <span class="n">map_fin</span><span class="p">)</span>
-        <span class="n">piezas</span> <span class="o">=</span> <span class="n">pieza_mal_colodas</span><span class="p">(</span><span class="n">actual</span><span class="p">,</span> <span class="n">map_fin</span><span class="p">)</span>
-        <span class="n">val</span> <span class="o">=</span> <span class="n">val</span> <span class="o">+</span> <span class="n">piezas</span> <span class="o">+</span> <span class="n">menor</span>
-        <span class="n">estado</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
-        <span class="n">estado</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="k">False</span><span class="p">)</span> 
-        <span class="k">return</span> <span class="n">estado</span>
-    <span class="k">return</span> <span class="k">None</span>
-
-<span class="k">def</span> <span class="nf">resolver</span><span class="p">(</span><span class="n">map_init</span><span class="p">,</span> <span class="n">map_fin</span><span class="p">):</span>
-    <span class="c"># ---------------------------------- Inicio de algoritmo --------------------------------</span>
-    <span class="c"># listas de estados y procesados</span>
-    <span class="n">estados</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">procesados</span> <span class="o">=</span> <span class="p">[]</span>
-    
-    <span class="c"># Agregamos el estado inicial</span>
-    <span class="n">estado</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">anterior</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">anterior</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">map_init</span><span class="p">)</span>
-    <span class="n">estado</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">map_init</span><span class="p">)</span> <span class="c"># Estado actual</span>
-    <span class="n">estado</span><span class="o">.</span><span class="n">append</span><span class="p">([])</span> <span class="c"># Estado anterior</span>
-    <span class="n">estado</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="c"># Costo</span>
-    <span class="n">estado</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="k">False</span><span class="p">)</span> <span class="c"># Estado aun no procesado</span>
-    <span class="n">estados</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">estado</span><span class="p">)</span> <span class="c"># Agregamos a estados</span>
-    <span class="c"># Iteramos para hallar la solucion</span>
-    <span class="c"># Número de movimientos realizados</span>
-    <span class="n">movimientos</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="k">while</span> <span class="nb">len</span><span class="p">(</span><span class="n">estados</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="n">movimientos</span> <span class="o">=</span> <span class="n">movimientos</span> <span class="o">+</span> <span class="mi">1</span>
-        <span class="n">menor</span> <span class="o">=</span> <span class="mi">10000</span><span class="p">;</span>
-        <span class="n">pos</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="c"># Buscamos el nodo que se aproxima mas a la solución</span>
-        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">estados</span><span class="p">)):</span>
-            <span class="n">act</span> <span class="o">=</span> <span class="n">estados</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
-            <span class="k">if</span> <span class="n">menor</span> <span class="o">&gt;</span> <span class="n">act</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">act</span><span class="p">[</span><span class="mi">3</span><span class="p">]:</span>
-                <span class="n">menor</span> <span class="o">=</span> <span class="n">act</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
-                <span class="n">pos</span> <span class="o">=</span> <span class="n">i</span>
-        <span class="c"># Agregamos este nodo a la lista de procesado y lo colocamos como visitado</span>
-        <span class="n">actual</span> <span class="o">=</span> <span class="n">estados</span><span class="p">[</span><span class="n">pos</span><span class="p">]</span>
-        <span class="n">estados</span><span class="p">[</span><span class="n">pos</span><span class="p">][</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="k">True</span>
-        <span class="n">nodo</span> <span class="o">=</span> <span class="n">actual</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-        <span class="n">procesados</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">nodo</span><span class="p">)</span>
-        <span class="c"># Buscamos el origen de la pieza a deslizar</span>
-        <span class="n">origen</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">nodo</span><span class="p">)):</span>
-            <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">nodo</span><span class="p">[</span><span class="mi">0</span><span class="p">])):</span>
-                <span class="k">if</span> <span class="n">nodo</span><span class="p">[</span><span class="n">x</span><span class="p">][</span><span class="n">y</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-                    <span class="n">origen</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-                    <span class="n">origen</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
-                    
-        <span class="c"># Obtenemos los vecinos</span>
-        <span class="k">if</span> <span class="n">origen</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="c"># Estado hacia arriba</span>
-            <span class="n">tmp</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">nodo</span><span class="p">)</span>
-            <span class="c"># generamos el estado hacia arriba</span>
-            <span class="n">tmp</span><span class="p">[</span><span class="n">origen</span><span class="p">[</span><span class="mi">0</span><span class="p">]][</span><span class="n">origen</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span> <span class="o">=</span> <span class="n">tmp</span><span class="p">[</span><span class="n">origen</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="n">origen</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span>
-            <span class="n">tmp</span><span class="p">[</span><span class="n">origen</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="n">origen</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span> <span class="o">=</span> <span class="mi">0</span>
-            <span class="n">estado</span> <span class="o">=</span> <span class="n">agregar_nodos</span><span class="p">(</span><span class="n">procesados</span><span class="p">,</span><span class="n">map_fin</span><span class="p">,</span><span class="n">tmp</span><span class="p">,</span><span class="n">menor</span><span class="p">)</span>
-
-            <span class="k">if</span> <span class="n">estado</span> <span class="o">==</span> <span class="k">None</span><span class="p">:</span>
-                <span class="n">k</span> <span class="o">=</span> <span class="mi">0</span>
-            <span class="k">elif</span> <span class="n">estado</span> <span class="o">==</span> <span class="p">[]:</span>
-                <span class="k">break</span>
-            <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">estado</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-                <span class="c"># Agregamos a la lista de estados</span>
-                <span class="n">estados</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">estado</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">origen</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">map_init</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">-</span><span class="mi">1</span><span class="p">:</span>
-            <span class="c"># Estado hacia la derecha</span>
-            <span class="n">tmp</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">nodo</span><span class="p">)</span>
-            <span class="n">tmp</span><span class="p">[</span><span class="n">origen</span><span class="p">[</span><span class="mi">0</span><span class="p">]][</span><span class="n">origen</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span> <span class="o">=</span> <span class="n">tmp</span><span class="p">[</span><span class="n">origen</span><span class="p">[</span><span class="mi">0</span><span class="p">]][</span><span class="n">origen</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span>
-            <span class="n">tmp</span><span class="p">[</span><span class="n">origen</span><span class="p">[</span><span class="mi">0</span><span class="p">]][</span><span class="n">origen</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
-            <span class="n">estado</span> <span class="o">=</span> <span class="n">agregar_nodos</span><span class="p">(</span><span class="n">procesados</span><span class="p">,</span><span class="n">map_fin</span><span class="p">,</span><span class="n">tmp</span><span class="p">,</span><span class="n">menor</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">estado</span> <span class="o">==</span> <span class="k">None</span><span class="p">:</span>
-                <span class="n">k</span> <span class="o">=</span> <span class="mi">0</span>
-            <span class="k">elif</span> <span class="n">estado</span> <span class="o">==</span> <span class="p">[]:</span>
-                <span class="k">break</span>
-            <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">estado</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-                <span class="n">estados</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">estado</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">origen</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="c"># Estado hacia la izquierda</span>
-            <span class="n">tmp</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">nodo</span><span class="p">)</span>
-            <span class="n">tmp</span><span class="p">[</span><span class="n">origen</span><span class="p">[</span><span class="mi">0</span><span class="p">]][</span><span class="n">origen</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span> <span class="o">=</span> <span class="n">tmp</span><span class="p">[</span><span class="n">origen</span><span class="p">[</span><span class="mi">0</span><span class="p">]][</span><span class="n">origen</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-            <span class="n">tmp</span><span class="p">[</span><span class="n">origen</span><span class="p">[</span><span class="mi">0</span><span class="p">]][</span><span class="n">origen</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
-            <span class="n">estado</span> <span class="o">=</span> <span class="n">agregar_nodos</span><span class="p">(</span><span class="n">procesados</span><span class="p">,</span><span class="n">map_fin</span><span class="p">,</span><span class="n">tmp</span><span class="p">,</span><span class="n">menor</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">estado</span> <span class="o">==</span> <span class="k">None</span><span class="p">:</span>
-                <span class="n">k</span> <span class="o">=</span> <span class="mi">0</span>
-            <span class="k">elif</span> <span class="n">estado</span> <span class="o">==</span> <span class="p">[]:</span>
-                <span class="k">break</span>
-            <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">estado</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-                <span class="n">estados</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">estado</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">origen</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">map_init</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">:</span>
-            <span class="c"># Estado hacia abajo</span>
-            <span class="n">tmp</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">nodo</span><span class="p">)</span>
-            <span class="n">tmp</span><span class="p">[</span><span class="n">origen</span><span class="p">[</span><span class="mi">0</span><span class="p">]][</span><span class="n">origen</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span> <span class="o">=</span> <span class="n">tmp</span><span class="p">[</span><span class="n">origen</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="mi">1</span><span class="p">][</span><span class="n">origen</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span>
-            <span class="n">tmp</span><span class="p">[</span><span class="n">origen</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="mi">1</span><span class="p">][</span><span class="n">origen</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span> <span class="o">=</span> <span class="mi">0</span>
-            <span class="n">estado</span> <span class="o">=</span> <span class="n">agregar_nodos</span><span class="p">(</span><span class="n">procesados</span><span class="p">,</span><span class="n">map_fin</span><span class="p">,</span><span class="n">tmp</span><span class="p">,</span><span class="n">menor</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">estado</span> <span class="o">==</span> <span class="k">None</span><span class="p">:</span>
-                <span class="n">k</span> <span class="o">=</span> <span class="mi">0</span>
-            <span class="k">elif</span> <span class="n">estado</span> <span class="o">==</span> <span class="p">[]:</span>
-                <span class="k">break</span>
-            <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">estado</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-                <span class="n">estados</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">estado</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s">&quot;solucion encontrada con &quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">movimientos</span><span class="p">)</span><span class="o">+</span><span class="s">&quot; movimientos&quot;</span><span class="p">)</span>
-
-
-<span class="n">map_init</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="n">map_init</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="mi">4</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">])</span>
-<span class="n">map_init</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="mi">7</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">])</span>
-<span class="n">map_init</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="mi">8</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">])</span>
-
-<span class="n">map_fin</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="n">map_fin</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">])</span>
-<span class="n">map_fin</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">])</span>
-<span class="n">map_fin</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="mi">7</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">0</span><span class="p">])</span>
-
-<span class="o">%</span><span class="k">time</span>
-<span class="n">resolver</span><span class="p">(</span><span class="n">map_init</span><span class="p">,</span> <span class="n">map_fin</span><span class="p">)</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area"><div class="prompt"></div>
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>CPU times: user 4 µs, sys: 0 ns, total: 4 µs
-Wall time: 15.5 µs
-Encontrado [[1, 2, 3], [4, 5, 6], [7, 8, 0]]
-solucion encontrada con 6653 movimientos
-</pre>
-</div>
-</div>
-<div class=" highlight hl-ipython3"><pre><span class="c"># De la misma manera adjunto imagenes con mas soluciones</span>
-<img src="../images/pantalla.png">
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre> 
-</pre></div>
-
-</div>
-</div>
-</div>
-
 </div>
     </div>
   </div>
